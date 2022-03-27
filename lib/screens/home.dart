@@ -27,8 +27,15 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Budget Tracker"),
+        actions: [
+          //IconButton(onPressed: () {}, icon: const Icon(Icons.attach_money))
+        ],
       ),
       body: pages[_currentPageIndex],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentPageIndex,
         items: bottomNavItems,
