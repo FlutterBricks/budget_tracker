@@ -1,65 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class HomePage extends StatelessWidget {
+import '../model/transaction_item.dart';
+
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<TransactionItem> items = [];
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: SizedBox(
-          width: screenSize.width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Align(
-                alignment: Alignment.topCenter,
-                child: CircularPercentIndicator(
-                  radius: screenSize.width / 2,
-                  lineWidth: 10.0,
-                  percent: .5,
-                  backgroundColor: Colors.white,
-                  center: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text(
-                        "\$0",
-                        style: TextStyle(
-                            fontSize: 48, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Balance",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            items.add(TransactionItem(amount: 5.99, itemTitle: "Food"));
+          });
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: SizedBox(
+            width: screenSize.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: CircularPercentIndicator(
+                    radius: screenSize.width / 2,
+                    lineWidth: 10.0,
+                    percent: .5,
+                    backgroundColor: Colors.white,
+                    center: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Text(
+                          "\$0",
+                          style: TextStyle(
+                              fontSize: 48, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Balance",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+                    progressColor: Theme.of(context).colorScheme.primary,
                   ),
-                  progressColor: Theme.of(context).colorScheme.primary,
                 ),
-              ),
-              const SizedBox(
-                height: 35,
-              ),
-              const Text(
-                "Items",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const TransactionCard(
-                amount: 105.99,
-                text: "Apple Watch",
-                isExpense: true,
-              ),
-              const TransactionCard(
-                amount: 800,
-                text: "Apple iPhone",
-                isExpense: false,
-              )
-            ],
+                const SizedBox(
+                  height: 35,
+                ),
+                const Text(
+                  "Items",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ...List.generate(
+                    items.length,
+                    (index) => TransactionCard(
+                          item: items[index],
+                        )),
+              ],
+            ),
           ),
         ),
       ),
@@ -68,15 +82,8 @@ class HomePage extends StatelessWidget {
 }
 
 class TransactionCard extends StatelessWidget {
-  final String text;
-  final double amount;
-  final bool isExpense;
-  const TransactionCard(
-      {required this.amount,
-      required this.text,
-      required this.isExpense,
-      Key? key})
-      : super(key: key);
+  final TransactionItem item;
+  const TransactionCard({required this.item, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -98,14 +105,14 @@ class TransactionCard extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              text,
+              item.itemTitle,
               style: const TextStyle(
                 fontSize: 18,
               ),
             ),
             const Spacer(),
             Text(
-              (isExpense ? "+ " : "- ") + amount.toString(),
+              (item.isExpense ? "+ " : "- ") + item.amount.toString(),
               style: const TextStyle(
                 fontSize: 16,
               ),

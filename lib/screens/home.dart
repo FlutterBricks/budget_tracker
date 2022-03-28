@@ -32,10 +32,6 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: pages[_currentPageIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentPageIndex,
         items: bottomNavItems,
