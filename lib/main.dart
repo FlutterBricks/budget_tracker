@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 void main() {
   return runApp(
     DevicePreview(
-      enabled: true,
+      //
+      enabled: false,
       builder: (context) => MyApp(), // Wrap your app
     ),
   );
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         final themeService = Provider.of<ThemeService>(context);
         return MaterialApp(
           title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
                 brightness:
