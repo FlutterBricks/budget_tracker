@@ -1,34 +1,29 @@
+import 'package:budget_tracker/services/local_storage_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/transaction_item.dart';
 
 class BudgetService extends ChangeNotifier {
-  double _budget = 2000.0;
+  BudgetService();
 
-  double get budget => _budget;
+  double getBudget() => LocalStorageService().getBudget();
 
-  double balance = 0.0;
+  double getBalance() => LocalStorageService().getBalance();
 
-  List<TransactionItem> _items = [];
+  // List<TransactionItem> _items = [];
 
-  List<TransactionItem> get items => _items;
+  List<TransactionItem> get items => LocalStorageService().getAllTransactions();
 
   set budget(double value) {
-    _budget = value;
+    LocalStorageService().addBudget(value);
     notifyListeners();
   }
 
   void addItem(TransactionItem item) {
-    _items.add(item);
-    updateBalance(item);
+    final localStorage = LocalStorageService();
+    localStorage.saveTransactionItem(item);
     notifyListeners();
-  }
-
-  void updateBalance(TransactionItem item) {
-    if (item.isExpense) {
-      balance += item.amount;
-    } else {
-      balance -= item.amount;
-    }
   }
 }

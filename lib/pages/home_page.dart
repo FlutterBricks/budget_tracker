@@ -2,6 +2,7 @@ import 'package:budget_tracker/services/budget_service.dart';
 import 'package:budget_tracker/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -48,13 +49,14 @@ class HomePage extends StatelessWidget {
                         return CircularPercentIndicator(
                           radius: screenSize.width / 2,
                           lineWidth: 10.0,
-                          percent: value.balance / value.budget,
+                          percent: value.getBalance() / value.getBudget(),
                           backgroundColor: Colors.white,
                           center: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "\$" + value.balance.toString().split(".")[0],
+                                "\$" +
+                                    value.getBalance().toString().split(".")[0],
                                 style: const TextStyle(
                                     fontSize: 48, fontWeight: FontWeight.bold),
                               ),
@@ -63,7 +65,7 @@ class HomePage extends StatelessWidget {
                                 style: TextStyle(fontSize: 18),
                               ),
                               Text(
-                                "Budget: \$" + value.budget.toString(),
+                                "Budget: \$" + value.getBudget().toString(),
                                 style: const TextStyle(fontSize: 10),
                               ),
                             ],
