@@ -5,7 +5,7 @@ import '../model/transaction_item.dart';
 
 class BudgetService extends ChangeNotifier {
   // => BudgetViewModel
-  BudgetService();
+  //BudgetService();
 
   double getBudget() => LocalStorageService().getBudget();
 
