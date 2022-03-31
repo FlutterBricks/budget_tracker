@@ -12,10 +12,10 @@ class LocalStorageService {
   factory LocalStorageService() {
     return _instance;
   }
-
-  LocalStorageService._internal() {
-    initializeHive();
-  }
+  LocalStorageService._internal();
+  // LocalStorageService._internal() {
+  //   initializeHive();
+  // }
 
   Future<void> initializeHive() async {
     await Hive.initFlutter();
@@ -41,7 +41,7 @@ class LocalStorageService {
     return Hive.box<double>(budgetBoxKey).get("budget") ?? 2000.0;
   }
 
-  Future<void> addBudget(double budget) {
+  Future<void> saveBudget(double budget) {
     return Hive.box<double>(budgetBoxKey).put("budget", budget);
   }
 

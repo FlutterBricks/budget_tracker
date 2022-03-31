@@ -1,11 +1,10 @@
 import 'package:budget_tracker/services/local_storage_service.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/transaction_item.dart';
 
 class BudgetService extends ChangeNotifier {
+  // => BudgetViewModel
   BudgetService();
 
   double getBudget() => LocalStorageService().getBudget();
@@ -17,7 +16,7 @@ class BudgetService extends ChangeNotifier {
   List<TransactionItem> get items => LocalStorageService().getAllTransactions();
 
   set budget(double value) {
-    LocalStorageService().addBudget(value);
+    LocalStorageService().saveBudget(value);
     notifyListeners();
   }
 
