@@ -1,4 +1,4 @@
-import 'package:budget_tracker/services/budget_service.dart';
+import 'package:budget_tracker/view_model/budget_view_model.dart';
 import 'package:budget_tracker/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 import '../model/transaction_item.dart';
+import '../view_model/budget_view_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,9 +23,9 @@ class HomePage extends StatelessWidget {
               builder: (context) {
                 return AddTransactionDialog(
                   itemToAdd: (transactionItem) {
-                    final budgetService =
-                        Provider.of<BudgetService>(context, listen: false);
-                    budgetService.addItem(transactionItem);
+                    final budgetViewModel =
+                        Provider.of<BudgetViewModel>(context, listen: false);
+                    budgetViewModel.addItem(transactionItem);
                     // setState(() {
                     //   items.add(transactionItem);
                     // });
@@ -44,19 +45,21 @@ class HomePage extends StatelessWidget {
               children: [
                 Align(
                     alignment: Alignment.topCenter,
-                    child: Consumer<BudgetService>(
+                    child: Consumer<BudgetViewModel>(
                       builder: ((context, value, child) {
+                        final balance = value.getBalance();
+                        final budget = value.getBudget();
+
                         return CircularPercentIndicator(
                           radius: screenSize.width / 2,
                           lineWidth: 10.0,
-                          percent: value.getBalance() / value.getBudget(),
+                          percent: balance / budget,
                           backgroundColor: Colors.white,
                           center: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "\$" +
-                                    value.getBalance().toString().split(".")[0],
+                                "\$" + balance.toString().split(".")[0],
                                 style: const TextStyle(
                                     fontSize: 48, fontWeight: FontWeight.bold),
                               ),
@@ -65,7 +68,7 @@ class HomePage extends StatelessWidget {
                                 style: TextStyle(fontSize: 18),
                               ),
                               Text(
-                                "Budget: \$" + value.getBudget().toString(),
+                                "Budget: \$" + budget.toString(),
                                 style: const TextStyle(fontSize: 10),
                               ),
                             ],
@@ -84,7 +87,7 @@ class HomePage extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                Consumer<BudgetService>(
+                Consumer<BudgetViewModel>(
                   builder: ((context, value, child) {
                     return ListView.builder(
                         shrinkWrap: true,
