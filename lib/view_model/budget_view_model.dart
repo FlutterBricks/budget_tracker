@@ -25,6 +25,14 @@ class BudgetViewModel extends ChangeNotifier {
     localStorage.saveTransactionItem(item);
     notifyListeners();
   }
+
+  void deleteItem(TransactionItem item) {
+    final localStorage = LocalStorageService();
+    // Call our localstorage service to delete the item
+    localStorage.deleteTransactionItem(item);
+    // Notify the listeners
+    notifyListeners();
+  }
 }
 
 // import 'package:flutter/material.dart';
